@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="theme-color" content="#1E1A16">
+<title>वारी सोबती | Vari Sobati</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --stone:#1E1A16;
+    --stone-2:#2A2420;
+    --ivory:#F7EFDD;
+    --ivory-dim:#EDE3CB;
+    --kesari:#E85D04;
+    --kesari-dim:#8f3c04;
+    --chandrabhaga:#2F7A82;
+    --tulsi:#5B8C3E;
+    --alert:#D33F3F;
+    --gold:#B8863B;
+    --text-on-stone:#F7EFDD;
+    --text-on-ivory:#241F1A;
+    --text-dim:#C9BBA0;
+    --radius:16px;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--stone);
+    color:var(--text-on-ivory);
+    font-family:'Noto Sans Devanagari','Noto Sans',sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+  }
+  .app{
+    width:100%;
+    max-width:480px;
+    min-height:100vh;
+    background:var(--stone);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+  h1,h2,h3,.display{
+    font-family:'Baloo 2','Noto Sans Devanagari',sans-serif;
+    font-weight:700;
+    margin:0;
+  }
+  /* ---------- TOP BAR ---------- */
+  .topbar{
+    background:var(--stone);
+    color:var(--text-on-stone);
+    padding:14px 16px 10px;
+    position:sticky; top:0; z-index:20;
+    border-bottom:1px solid rgba(184,134,59,0.35);
+  }
+  .topbar-row{
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .brand{
+    display:flex; align-items:center; gap:8px;
+  }
+  .brand-mark{
+    width:32px;height:32px;flex:none;
+  }
+  .brand-text{
+    font-family:'Baloo 2',sans-serif; font-weight:800; font-size:19px;
+    color:var(--ivory);
+    letter-spacing:0.2px;
+  }
+  .brand-sub{
+    font-size:10px; color:var(--gold); letter-spacing:1px; text-transform:uppercase; font-family:'Noto Sans',sans-serif;
+  }
+  .topbar-actions{ display:flex; align-items:center; gap:6px; }
+  .lang-toggle{
+    display:flex; background:var(--stone-2); border-radius:20px; padding:2px; gap:2px;
+  }
+  .lang-btn{
+    border:none; background:transparent; color:var(--text-dim);
+    font-family:'Noto Sans Devanagari',sans-serif; font-size:12.5px; font-weight:600;
+    padding:6px 10px; border-radius:18px; cursor:pointer;
+  }
+  .lang-btn.active{ background:var(--kesari); color:#fff; }
+  .info-btn{
+    background:var(--stone-2); border:1px solid var(--gold); color:var(--gold);
+    width:32px; height:32px; border-radius:50%; font-size:15px; font-weight:700;
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+  }
+  /* Signature: Wari path progress strip */
+  .wari-path{
+    margin-top:12px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .wari-path-track{
+    position:relative; flex:1; height:6px;
+    background:repeating-linear-gradient(to right, rgba(247,239,221,0.28) 0 6px, transparent 6px 12px);
+    border-radius:3px;
+  }
+  .wari-path-fill{
+    position:absolute; top:0; left:0; height:6px; border-radius:3px;
+    background:var(--kesari);
+  }
+  .wari-marker{
+    position:absolute; top:50%; width:16px; height:16px; border-radius:50%;
+    background:var(--kesari); border:2px solid var(--ivory);
+    transform:translate(-50%,-50%);
+    box-shadow:0 0 0 4px rgba(232,93,4,0.25);
+  }
+  .wari-temple{ font-size:16px; flex:none; }
+  .wari-day-label{
+    font-size:11px; color:var(--text-dim); white-space:nowrap; flex:none;
+    font-family:'Noto Sans',sans-serif;
+  }
+  /* ---------- CONTENT ---------- */
+  .content{
+    flex:1;
+    background:var(--stone);
+    padding:16px 16px calc(90px + var(--safe-bottom));
+    overflow-y:auto;
+  }
+  .panel{ display:none; }
+  .panel.active{ display:block; animation:fadeIn .25s ease; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+
+  .card{
+    background:var(--ivory);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.25);
+  }
+  .card-title{
+    display:flex; align-items:center; gap:8px;
+    font-size:15px; color:var(--text-on-ivory); margin-bottom:10px;
+  }
+  .card-title .icon{ font-size:19px; }
+  .eyebrow{
+    font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--kesari-dim);
+    font-weight:700; font-family:'Noto Sans',sans-serif; margin-bottom:4px;
+  }
+  .muted{ color:#6b6153; font-size:13px; line-height:1.5; }
+  .section-title{
+    color:var(--text-on-stone); font-size:13px; letter-spacing:0.5px;
+    text-transform:uppercase; margin:18px 0 8px; opacity:0.75; font-family:'Noto Sans',sans-serif;
+  }
+
+  /* Home: weather */
+  .weather-hero{
+    display:flex; align-items:center; justify-content:space-between; gap:14px;
+  }
+  .weather-temp{ font-size:44px; font-weight:800; font-family:'Baloo 2',sans-serif; line-height:1; }
+  .weather-desc{ font-size:13.5px; color:#6b6153; margin-top:4px; }
+  .weather-emoji{ font-size:46px; }
+  .weather-grid{
+    display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:14px;
+  }
+  .weather-chip{
+    background:var(--ivory-dim); border-radius:10px; padding:8px 6px; text-align:center;
+  }
+  .weather-chip .val{ font-weight:700; font-size:14px; }
+  .weather-chip .lbl{ font-size:10px; color:#6b6153; margin-top:2px; }
+  .advisory{
+    margin-top:12px; background:rgba(47,122,130,0.12); border-left:3px solid var(--chandrabhaga);
+    padding:9px 11px; border-radius:8px; font-size:12.5px; color:#274b4e; line-height:1.5;
+  }
+  .advisory.warn{ background:rgba(211,63,63,0.1); border-left-color:var(--alert); color:#7a2323; }
+
+  /* today's halt card */
+  .halt-row{
+    display:flex; align-items:center; gap:12px;
+  }
+  .halt-badge{
+    width:46px;height:46px;border-radius:50%;background:var(--kesari); color:#fff;
+    display:flex;align-items:center;justify-content:center;font-family:'Baloo 2';font-weight:800;font-size:15px;flex:none;
+  }
+  .halt-name{ font-weight:700; font-size:16px; }
+  .halt-meta{ font-size:12px; color:#6b6153; margin-top:2px; }
+
+  .btn-row{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+  .btn{
+    flex:1; min-width:120px; text-align:center; text-decoration:none;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    background:var(--kesari); color:#fff; font-weight:700; font-size:13.5px;
+    padding:12px 10px; border-radius:12px; border:none; cursor:pointer;
+    font-family:'Noto Sans Devanagari',sans-serif;
+  }
+  .btn.secondary{ background:var(--chandrabhaga); }
+  .btn.outline{ background:transparent; border:1.5px solid var(--gold); color:var(--gold-line, var(--gold)); }
+  .btn.alert{ background:var(--alert); }
+  .btn.big{ font-size:16px; padding:16px; }
+
+  /* Route timeline */
+  .palkhi-switch{ display:flex; gap:8px; margin-bottom:14px; }
+  .palkhi-switch button{
+    flex:1; padding:10px; border-radius:12px; border:1.5px solid var(--gold);
+    background:transparent; color:var(--ivory); font-weight:700; font-size:13px;
+    font-family:'Noto Sans Devanagari',sans-serif; cursor:pointer;
+  }
+  .palkhi-switch button.active{ background:var(--kesari); border-color:var(--kesari); color:#fff; }
+
+  .timeline{ position:relative; padding-left:26px; }
+  .timeline::before{
+    content:''; position:absolute; left:9px; top:6px; bottom:6px; width:2px;
+    background:rgba(247,239,221,0.25);
+  }
+  .tl-item{ position:relative; margin-bottom:16px; }
+  .tl-dot{
+    position:absolute; left:-26px; top:2px; width:20px; height:20px; border-radius:50%;
+    background:var(--stone-2); border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:10px;
+  }
+  .tl-item.today .tl-dot{ background:var(--kesari); border-color:var(--kesari); }
+  .tl-item.past .tl-dot{ background:var(--tulsi); border-color:var(--tulsi); }
+  .tl-card{
+    background:var(--ivory); border-radius:12px; padding:11px 13px;
+  }
+  .tl-item.today .tl-card{ box-shadow:0 0 0 2px var(--kesari); }
+  .tl-top{ display:flex; justify-content:space-between; align-items:baseline; }
+  .tl-name{ font-weight:700; font-size:14.5px; }
+  .tl-date{ font-size:11px; color:#8a7d63; font-family:'Noto Sans',sans-serif; }
+  .tl-tag{
+    display:inline-block; margin-top:4px; font-size:10.5px; padding:2px 8px; border-radius:20px;
+    background:rgba(232,93,4,0.15); color:var(--kesari-dim); font-weight:700;
+  }
+  .disclaimer{
+    font-size:11.5px; color:var(--text-dim); background:var(--stone-2); border-radius:10px;
+    padding:10px 12px; margin-bottom:14px; line-height:1.5; border:1px dashed var(--gold);
+  }
+
+  /* Health facilities */
+  .fac-item{
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+    padding:11px 0; border-bottom:1px solid rgba(0,0,0,0.08);
+  }
+  .fac-item:last-child{ border-bottom:none; }
+  .fac-name{ font-weight:700; font-size:13.5px; }
+  .fac-meta{ font-size:11.5px; color:#8a7d63; margin-top:2px; }
+  .fac-dist{ font-size:11px; background:var(--chandrabhaga); color:#fff; padding:3px 8px; border-radius:20px; flex:none; }
+  .fac-actions{ display:flex; gap:6px; flex:none; }
+  .icon-btn{
+    width:34px; height:34px; border-radius:50%; border:none; background:var(--ivory-dim);
+    display:flex; align-items:center; justify-content:center; font-size:15px; cursor:pointer; text-decoration:none;
+  }
+
+  /* Emergency */
+  .em-item{
+    display:flex; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid rgba(0,0,0,0.08);
+  }
+  .em-item:last-child{ border-bottom:none; }
+  .em-num{
+    font-family:'Baloo 2',sans-serif; font-weight:800; font-size:22px; color:var(--alert);
+    width:74px; flex:none; text-align:center;
+  }
+  .em-label{ font-weight:700; font-size:14px; }
+  .em-sub{ font-size:11.5px; color:#8a7d63; margin-top:2px; }
+  .call-btn{
+    margin-left:auto; background:var(--alert); color:#fff; border:none; width:40px; height:40px;
+    border-radius:50%; font-size:16px; display:flex; align-items:center; justify-content:center; cursor:pointer; text-decoration:none; flex:none;
+  }
+
+  /* Guidelines */
+  .guide-item{ margin-bottom:10px; border-radius:12px; background:var(--ivory); overflow:hidden; }
+  .guide-head{
+    display:flex; align-items:center; gap:10px; padding:13px 14px; cursor:pointer;
+  }
+  .guide-head .icon{ font-size:20px; flex:none; }
+  .guide-head .title{ font-weight:700; font-size:14px; flex:1; }
+  .guide-head .chev{ transition:transform .2s; color:#8a7d63; }
+  .guide-item.open .chev{ transform:rotate(180deg); }
+  .guide-body{ display:none; padding:0 14px 14px 44px; font-size:13px; color:#4a4237; line-height:1.6; }
+  .guide-item.open .guide-body{ display:block; }
+
+  /* Bottom nav */
+  .bottomnav{
+    position:fixed; bottom:0; left:50%; transform:translateX(-50%);
+    width:100%; max-width:480px;
+    background:var(--stone-2);
+    display:flex;
+    padding:6px 4px calc(6px + var(--safe-bottom));
+    border-top:1px solid rgba(184,134,59,0.35);
+    z-index:30;
+  }
+  .navbtn{
+    flex:1; background:transparent; border:none; color:var(--text-dim);
+    display:flex; flex-direction:column; align-items:center; gap:2px; padding:8px 2px;
+    cursor:pointer; border-radius:12px; font-family:'Noto Sans Devanagari',sans-serif;
+  }
+  .navbtn .navicon{ font-size:20px; }
+  .navbtn .navlabel{ font-size:10.5px; font-weight:600; }
+  .navbtn.active{ color:var(--kesari); }
+  .navbtn.active .navicon{ transform:translateY(-1px); }
+
+  /* Modal (about) */
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(0,0,0,0.55); display:none; align-items:center; justify-content:center; z-index:50; padding:20px;
+  }
+  .modal-backdrop.show{ display:flex; }
+  .modal{
+    background:var(--ivory); border-radius:16px; padding:20px; max-width:400px; max-height:80vh; overflow-y:auto;
+  }
+  .modal h3{ margin-bottom:10px; }
+  .modal p{ font-size:13.5px; line-height:1.6; color:#4a4237; margin:0 0 10px; }
+  .modal-close{
+    margin-top:8px; width:100%; padding:12px; background:var(--stone); color:var(--ivory);
+    border:none; border-radius:10px; font-weight:700; cursor:pointer; font-family:'Noto Sans Devanagari';
+  }
+  .skeleton{ opacity:0.6; font-size:13px; color:#8a7d63; text-align:center; padding:10px; }
+  .locate-note{ font-size:11.5px; color:#8a7d63; margin-top:8px; text-align:center; }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-row">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="19" fill="#E85D04"/>
+          <path d="M20 6 L20 30" stroke="#F7EFDD" stroke-width="2.4" stroke-linecap="round"/>
+          <circle cx="20" cy="9" r="3.2" fill="#F7EFDD"/>
+          <path d="M11 30 Q20 24 29 30" stroke="#F7EFDD" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <div class="brand-text" data-i18n="appName">वारी सोबती</div>
+          <div class="brand-sub" data-i18n="appTagline">walking-stick companion</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <div class="lang-toggle">
+          <button class="lang-btn" data-lang="mr">मर</button>
+          <button class="lang-btn" data-lang="hi">हि</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+        <button class="info-btn" id="infoBtn">ⓘ</button>
+      </div>
+    </div>
+    <div class="wari-path">
+      <span class="wari-temple">🚩</span>
+      <div class="wari-path-track" id="pathTrack">
+        <div class="wari-path-fill" id="pathFill"></div>
+        <div class="wari-marker" id="pathMarker"></div>
+      </div>
+      <span class="wari-temple">🛕</span>
+      <span class="wari-day-label" id="dayLabel">दिवस १/१८</span>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content" id="content">
+
+    <!-- HOME -->
+    <div class="panel active" id="panel-home"></div>
+    <!-- ROUTE -->
+    <div class="panel" id="panel-route"></div>
+    <!-- HEALTH -->
+    <div class="panel" id="panel-health"></div>
+    <!-- EMERGENCY -->
+    <div class="panel" id="panel-emergency"></div>
+    <!-- GUIDE -->
+    <div class="panel" id="panel-guide"></div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottomnav">
+    <button class="navbtn active" data-tab="home"><span class="navicon">🏠</span><span class="navlabel" data-i18n="navHome">मुख्यपृष्ठ</span></button>
+    <button class="navbtn" data-tab="route"><span class="navicon">🚩</span><span class="navlabel" data-i18n="navRoute">मुक्काम</span></button>
+    <button class="navbtn" data-tab="health"><span class="navicon">➕</span><span class="navlabel" data-i18n="navHealth">आरोग्य</span></button>
+    <button class="navbtn" data-tab="emergency"><span class="navicon">📞</span><span class="navlabel" data-i18n="navEmergency">आपत्कालीन</span></button>
+    <button class="navbtn" data-tab="guide"><span class="navicon">📖</span><span class="navlabel" data-i18n="navGuide">सूचना</span></button>
+  </div>
+
+  <!-- ABOUT MODAL -->
+  <div class="modal-backdrop" id="aboutModal">
+    <div class="modal">
+      <h3 data-i18n="aboutTitle">वारी सोबती विषयी</h3>
+      <p data-i18n="aboutBody1">हे संकेतस्थळ वारीत सहभागी वारकऱ्यांसाठी बनवलेल्या "स्मार्ट काठी" (वारी वॉकिंग स्टिक) वरील QR कोडद्वारे उघडते.</p>
+      <p data-i18n="aboutBody2">हवामान, मुक्काम स्थळे, जवळील रुग्णालये आणि आपत्कालीन क्रमांक — सर्व एका ठिकाणी.</p>
+      <p data-i18n="aboutBody3">तारखा व मार्ग अंदाजे आहेत — अचूक माहितीसाठी स्थानिक देवस्थान समिती व पोलीस प्रशासनाशी संपर्क करा.</p>
+      <button class="modal-close" id="closeAbout" data-i18n="close">बंद करा</button>
+    </div>
+  </div>
+
+</div>
+<script src="app.js"></script>
+</body>
+</html>
