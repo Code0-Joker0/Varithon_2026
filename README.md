@@ -281,7 +281,7 @@ All other queries fall through to the Ollama LLM.
 
 ### Live site
 
-The frontend is deployed to **GitHub Pages** and automatically rebuilt on every push to `main` via the [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) workflow:
+The frontend is deployed to **GitHub Pages** and automatically rebuilt on every push to `vedashree` via the [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) workflow:
 
 ```
 https://code0-joker0.github.io/Varithon_2026/
@@ -319,7 +319,7 @@ The frontend reads `VITE_BACKEND_URL` from environment at build time:
 
 ```bash
 # .env.local (not committed — gitignored)
-VITE_BACKEND_URL=http://100.102.220.16:8000   # your Tailscale backend address
+VITE_BACKEND_URL=https://terminalhack.tail92f130.ts.net   # your Tailscale backend address
 ```
 
 See [`.env.example`](.env.example) for the full template.
