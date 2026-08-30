@@ -6,17 +6,19 @@ import WeatherAlerts from './components/WeatherAlerts';
 import EmergencyContacts from './components/EmergencyContacts';
 import LocationDirectory from './components/LocationDirectory';
 import HealthGuidelines from './components/HealthGuidelines';
+import PalkhiTimeline from './components/PalkhiTimeline';
+import AssistantPanel from './components/AssistantPanel';
 import Footer from './components/Footer';
 import divGhatBg from './assets/div_ghat_bg.jpg';
 
-import { Sun, PhoneCall, MapPin, HeartPulse, ArrowLeft, Siren, Sparkles } from 'lucide-react';
+import { Sun, PhoneCall, MapPin, HeartPulse, ArrowLeft, Siren, Sparkles, Bot } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [darkMode] = useState(true);
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [isSirenModalOpen, setIsSirenModalOpen] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState('mr');
+  const [currentLanguage, setCurrentLanguage] = useState('mr'); // kept for potential future use
 
   useEffect(() => {
     document.documentElement.classList.add('dark');
@@ -55,6 +57,14 @@ export default function App() {
       icon: <HeartPulse className="w-16 h-16 text-emerald-400" />,
       circleBg: 'bg-gradient-to-b from-emerald-500/60 via-black/95 to-black border-emerald-400',
       badgeBg: 'bg-emerald-400 text-black',
+    },
+    {
+      id: 'assistant',
+      title: '५. एआय सहाय्यक',
+      desc: 'मराठीत प्रश्न विचारा — बोलून किंवा लिहून',
+      icon: <Bot className="w-16 h-16 text-violet-400" />,
+      circleBg: 'bg-gradient-to-b from-violet-600/60 via-black/95 to-black border-violet-500',
+      badgeBg: 'bg-violet-500 text-white',
     }
   ];
 
@@ -80,8 +90,6 @@ export default function App() {
           onOpenQR={() => setIsQRModalOpen(true)}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
-          currentLanguage={currentLanguage}
-          setCurrentLanguage={setCurrentLanguage}
         />
 
         {/* Main Container */}
@@ -125,8 +133,18 @@ export default function App() {
                   पालखी सोहळा २४×७ मदत व सेवा पोर्टल
                 </h2>
                 <p className="text-lg sm:text-xl font-bold text-zinc-200 max-w-2xl mx-auto">
-                  हवामान अंदाज, आपत्कालीन १०८ हेल्पलाइन, आरोग्य केंद्र पत्ते व प्रथमोपचार माहिती पाहण्यासाठी खालील कोणत्याही ४ पर्यायांवर स्पर्श करा:
+                  हवामान अंदाज, आपत्कालीन १०८ हेल्पलाइन, आरोग्य केंद्र पत्ते व प्रथमोपचार माहिती — किंवा खालील बटणावर टाचून एआय सहाय्यकाला थेट प्रश्न विचारा:
                 </p>
+
+                {/* ── AI Assistant CTA — primary homepage entry point ── */}
+                <button
+                  onClick={() => setActiveTab('assistant')}
+                  className="inline-flex items-center justify-center space-x-3 bg-gradient-to-r from-violet-600 to-purple-700 hover:from-violet-700 hover:to-purple-800 text-white px-8 py-4 rounded-2xl text-xl font-black shadow-2xl transition active:scale-95 border-2 border-violet-400 w-full sm:w-auto"
+                >
+                  <Bot className="w-7 h-7 text-violet-200" />
+                  <span>🎙️ एआय सहाय्यकाला विचारा</span>
+                  <Sparkles className="w-5 h-5 text-amber-300 animate-pulse" />
+                </button>
               </div>
 
               {/* THE 4 NEAT & CLEAN LARGE CIRCLES FLOATING ON STILL BACKGROUND */}
@@ -185,6 +203,8 @@ export default function App() {
               {activeTab === 'contacts' && <EmergencyContacts />}
               {activeTab === 'directory' && <LocationDirectory />}
               {activeTab === 'health' && <HealthGuidelines />}
+              {activeTab === 'palkhi' && <PalkhiTimeline />}
+              {activeTab === 'assistant' && <AssistantPanel />}
             </div>
           )}
         </main>

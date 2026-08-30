@@ -4,6 +4,10 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // GitHub Pages serves this project at /Varithon_2026/ (repo name as subpath).
+  // During local dev, Vite ignores this and serves from /.
+  base: '/Varithon_2026/',
+
   plugins: [
     react(),
     tailwindcss()
@@ -14,3 +18,4 @@ export default defineConfig({
     strictPort: false
   }
 })
+

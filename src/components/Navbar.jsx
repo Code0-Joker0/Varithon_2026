@@ -5,8 +5,6 @@ export default function Navbar({
   onOpenQR, 
   activeTab, 
   setActiveTab,
-  currentLanguage,
-  setCurrentLanguage
 }) {
   return (
     <header className="sticky top-0 z-40 w-full bg-black border-b-2 border-orange-600 shadow-2xl">
@@ -44,18 +42,8 @@ export default function Navbar({
 
         {/* Action Buttons */}
         <div className="flex items-center space-x-2 sm:space-x-3">
-          {/* Language Selector */}
-          <div className="relative">
-            <select
-              value={currentLanguage}
-              onChange={(e) => setCurrentLanguage(e.target.value)}
-              className="bg-zinc-900 text-white border-2 border-orange-500 text-sm font-bold rounded-xl px-3 py-2 outline-none cursor-pointer"
-            >
-              <option value="mr">🚩 मराठी</option>
-              <option value="en">🌐 English</option>
-              <option value="hi">🇮🇳 हिंदी</option>
-            </select>
-          </div>
+          {/* Google Translate Widget — replaces the previous non-functional select */}
+          <div id="google_translate_element" />
 
           {/* QR Portal Generator Button */}
           <button

@@ -10,6 +10,47 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Google Translate widget -->
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: 'mr',
+            includedLanguages: 'mr,hi,en',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false,
+          },
+          'google_translate_element'
+        );
+      }
+    </script>
+    <script type="text/javascript"
+      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    ></script>
+
+    <style>
+      /* ── Force Google Translate widget to match dark navbar ── */
+      #google_translate_element .goog-te-gadget-simple {
+        background: #18181b !important;  /* zinc-900 */
+        border: 2px solid #f97316 !important; /* orange-500 */
+        border-radius: 12px !important;
+        padding: 4px 10px !important;
+        font-family: 'Mukta', 'Outfit', sans-serif !important;
+        font-weight: 700 !important;
+        font-size: 14px !important;
+      }
+      #google_translate_element .goog-te-menu-value span,
+      #google_translate_element .goog-te-gadget-simple a span {
+        color: #ffffff !important;
+      }
+      #google_translate_element .goog-te-gadget-simple .goog-te-menu-value img {
+        display: none !important;
+      }
+      /* Hide the "Powered by Google" footer bar that appears top of page */
+      .goog-te-banner-frame, .skiptranslate { display: none !important; }
+      body { top: 0 !important; }  /* prevent page push-down from the banner */
+    </style>
   </head>
   <body class="bg-amber-50/50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased">
     <div id="root"></div>
