@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - vedashree
+      - ved
 
 # Allow the workflow to write to the gh-pages branch / Pages deployment
 permissions:
@@ -36,14 +36,8 @@ jobs:
 
       - name: Build
         run: npm run build
-        # VITE_BACKEND_URL is intentionally NOT set here.
-        # The deployed site targets the AI assistant at localhost:8000 by default,
-        # which only works for devices on the same Tailscale network as the backend.
-        # To point at a specific host, add VITE_BACKEND_URL as a GitHub Actions secret:
-        #   Settings → Secrets → Actions → New repository secret
-        # Then uncomment:
-        # env:
-        #   VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+        env:
+          VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
