@@ -45,7 +45,7 @@ app.add_middleware(
 
 # ---- Ollama config (desktop, internal Tailscale — NOT exposed publicly) ----
 OLLAMA_URL = "http://100.102.220.16:11434/api/generate"
-OLLAMA_MODEL = "vari-assistant"
+OLLAMA_MODEL = "varkari:latest"
 
 # ---- Keyword router ----
 EMERGENCY_KEYWORDS = ["आपत्कालीन", "मदत", "अपघात", "इजा", "वाचवा"]

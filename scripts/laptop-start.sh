@@ -176,16 +176,44 @@ section "Step 5 -- Enabling Tailscale Funnel"
 
 # tailscale funnel <port> enables HTTPS Funnel for the given local port.
 # --bg keeps the funnel alive after the shell exits.
-if tailscale funnel --bg "${BACKEND_PORT}" 2>/dev/null; then
-    ok "Funnel enabled (--bg)"
-else
-    # Older Tailscale versions use the serve+funnel combo
+#
+# Tailscale v1.84+ requires operator permissions for funnel.
+# One-time fix (run once, then this script never needs sudo for funnel):
+#   sudo tailscale set --operator=$USER
+
+_enable_funnel() {
+    # Try as current user first (works if operator is set)
+    if tailscale funnel --bg "${BACKEND_PORT}" 2>/tmp/ts-funnel-err; then
+        ok "Funnel enabled (--bg)"
+        return 0
+    fi
+
+    # Check if the error is the operator/permission error
+    if grep -qi "access denied\|denied\|operator" /tmp/ts-funnel-err 2>/dev/null; then
+        warn "Funnel needs elevated permissions (Tailscale operator not set for $USER)"
+        info "Tip: run once to fix permanently: sudo tailscale set --operator=$USER"
+        info "Trying with sudo..."
+        if sudo tailscale funnel --bg "${BACKEND_PORT}" 2>/dev/null; then
+            ok "Funnel enabled (sudo --bg)"
+            return 0
+        fi
+    fi
+
+    # Last resort: legacy serve --funnel syntax
     info "Trying legacy 'tailscale serve --funnel' syntax..."
-    tailscale serve --funnel --bg "http://127.0.0.1:${BACKEND_PORT}" 2>/dev/null \
-        || fail "Could not enable Funnel. Check: tailscale funnel status
-  Make sure Funnel is enabled for your account: https://tailscale.com/kb/1223/funnel"
-    ok "Funnel enabled (legacy serve --funnel)"
-fi
+    if sudo tailscale serve --funnel --bg "http://127.0.0.1:${BACKEND_PORT}" 2>/dev/null; then
+        ok "Funnel enabled (legacy serve --funnel)"
+        return 0
+    fi
+
+    # All attempts failed — surface the original error
+    cat /tmp/ts-funnel-err >&2 2>/dev/null || true
+    fail "Could not enable Funnel. Check: tailscale funnel status
+  Make sure Funnel is enabled for your account: https://tailscale.com/kb/1223/funnel
+  Or run once: sudo tailscale set --operator=\$USER"
+}
+
+_enable_funnel
 
 # Confirm funnel is live
 sleep 1
